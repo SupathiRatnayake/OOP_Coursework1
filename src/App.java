@@ -11,6 +11,9 @@ public class App {
 
     public static void main(String[] args) {
 
+        // test file read
+        init();
+
         // for testing purposes test()
         test();
 
@@ -100,8 +103,7 @@ public class App {
 
         rvm.addVehicle(v);
         System.out.println("Successfully added 1 " + v.getClass().getName());
-        System.out.println("Press enter to visit main menu");
-        in.nextLine();
+        promptToMainMenu();
     }
 
     private static void deleteVehicle() {
@@ -109,16 +111,16 @@ public class App {
         System.out.println("Delete a vehicle");
         System.out.print("Enter plate number: ");
         String plateNo = in.nextLine();
-        String vehicle = rvm.deleteVehicle(plateNo);
-        System.out.println("You deleted this vehicle: " + vehicle);
-        in.nextLine();
+        String message = rvm.deleteVehicle(plateNo);
+        System.out.println(message);
+        promptToMainMenu();
     }
 
     private static void printListOfVehicles() {
         // method body here
         rvm.printList();
         System.out.println("Press enter to visit main menu");
-        in.nextLine();
+        promptToMainMenu();
     }
 
     private static void saveToFile(){
@@ -132,7 +134,7 @@ public class App {
             e.printStackTrace();
         }
         System.out.println("Press enter to visit main menu");
-        in.nextLine();
+        promptToMainMenu();
     }
 
     private static int getInt(String hint){
@@ -164,15 +166,29 @@ public class App {
     }
 
     static void test(){
-        Vehicle v1 = new Car("aaa xxxx", "c1", 800, 5, 4);
-        Vehicle v2 = new Car("bbb xxxx", "c2", 3500, 5, 8);
-        Vehicle v3 = new Bike("ccc xxxx", "b1", 300, "cruiser", true);
-        Vehicle v4 = new Bike("ddd xxxx", "b1", 100, "scooter", false);
+        Vehicle v1 = new Car("aaa yyyy", "c1", 800, 5, 4);
+        Vehicle v2 = new Car("bbb yyyy", "c2", 3500, 5, 8);
+        Vehicle v3 = new Bike("ccc yyyy", "b1", 300, "cruiser", true);
+        Vehicle v4 = new Bike("ddd yyyy", "b1", 100, "scooter", false);
 
         Vehicle[] testList = {v1, v2, v3, v4};
         for (Vehicle v: testList){
             rvm.addVehicle(v);
         }
+    }
+
+    static void init(){
+        try {
+            rvm.readList();
+        } catch (IOException e) {
+            System.out.println("Oops!");
+            e.printStackTrace();
+        }
+    }
+
+    private static void promptToMainMenu(){
+        System.out.println("press any key to visit Main Menu.");
+        in.nextLine();
     }
 
 }
