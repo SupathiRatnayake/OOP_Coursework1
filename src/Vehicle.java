@@ -21,4 +21,17 @@ public class Vehicle {
     public String getPlateNo() {
         return plateNo;
     }
+
+    public String getMake() {
+        return make;
+    }
+
+    public int getEngine() {
+        return engine;
+    }
+
+    public Schedule getBooking() {
+        return booking;
+    }
+
 }

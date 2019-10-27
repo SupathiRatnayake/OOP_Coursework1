@@ -17,6 +17,12 @@ public class Car extends Vehicle{
                 " seats: " + seats;
     }
 
+    public int getDoors() {
+        return doors;
+    }
 
+    public int getSeats() {
+        return seats;
+    }
 
 }

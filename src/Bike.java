@@ -17,4 +17,11 @@ public class Bike extends Vehicle {
                 " sidecar: " + sidecar;
     }
 
+    public String getBikeType() {
+        return bikeType;
+    }
+
+    public boolean isSidecar() {
+        return sidecar;
+    }
 }

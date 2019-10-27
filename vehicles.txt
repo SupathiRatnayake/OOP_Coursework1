@@ -1,0 +1,4 @@
+Car;aaa xxxx;c1;800;5;4;
+Car;bbb xxxx;c2;3500;5;8;
+Bike;ccc xxxx;b1;300;cruiser;true;
+Bike;ddd xxxx;b1;100;scooter;false;
