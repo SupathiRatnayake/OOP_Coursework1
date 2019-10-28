@@ -7,10 +7,18 @@ import java.util.Scanner;
 public class WestminsterRentalVehicleManager implements RentalVehicleManager {
 
     private ArrayList<Vehicle> vehicles = new ArrayList<>(); // initialize empty ArrayList of Vehicle objects
+    private ArrayList<Schedule> bookings = new ArrayList<>(); // Initialize ArrayList of booking schedules
 
+    private final int MAX_PARKING = 50;
     @Override
-    public void addVehicle(Vehicle v) {
-        vehicles.add(v);
+    public String addVehicle(Vehicle v) {
+        if (vehicles.size() < MAX_PARKING){
+            vehicles.add(v);
+            return "1 " + v.getClass().getName() + " added Successfully. "
+                    + (MAX_PARKING - vehicles.size()) + " Parking lots are available";
+        }else {
+            return "No parking lots available. The vehicle was not entered";
+        }
     }
 
     @Override
@@ -87,6 +95,10 @@ public class WestminsterRentalVehicleManager implements RentalVehicleManager {
                     break;
             }
         }
+    }
+
+    public void addSchedule(Schedule s){
+        bookings.add(s);
     }
 
 }

@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Date {
+public class Date implements Comparable<Date>{
     private int day;
     private int month;
     private int year;
@@ -109,5 +109,19 @@ public class Date {
     @Override
     public int hashCode() {
         return Objects.hash(day, month, year);
+    }
+
+
+    @Override
+    public int compareTo(Date d) {
+        if (this.year == d.year){
+            if (this.month == d.month){
+                return Integer.compare(this.day, d.day);
+            }else {
+                return Integer.compare(this.month, d.month);
+            }
+        }else {
+            return Integer.compare(this.year, d.year);
+        }
     }
 }

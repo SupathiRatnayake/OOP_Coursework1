@@ -101,8 +101,8 @@ public class App {
             );
         }
 
-        rvm.addVehicle(v);
-        System.out.println("Successfully added 1 " + v.getClass().getName());
+        String msg = rvm.addVehicle(v);
+        System.out.println(msg);
         promptToMainMenu();
     }
 
@@ -118,8 +118,7 @@ public class App {
 
     private static void printListOfVehicles() {
         // method body here
-        rvm.printList();
-        System.out.println("Press enter to visit main menu");
+        rvm.printList(); // call printList method of rvm
         promptToMainMenu();
     }
 
@@ -133,7 +132,6 @@ public class App {
             System.out.println("Error occurred!");
             e.printStackTrace();
         }
-        System.out.println("Press enter to visit main menu");
         promptToMainMenu();
     }
 

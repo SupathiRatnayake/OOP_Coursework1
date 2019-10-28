@@ -1,9 +1,11 @@
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class Vehicle {
 
     private String plateNo; // plate number
     private String make;    // make of vehicle
     private int engine;     // engine capacity in cc
-    private Schedule booking; // booking schedule
 
     public Vehicle(String plateNo, String make, int engine) {
         this.plateNo = plateNo;
@@ -30,8 +32,5 @@ public class Vehicle {
         return engine;
     }
 
-    public Schedule getBooking() {
-        return booking;
-    }
-
+    
 }
