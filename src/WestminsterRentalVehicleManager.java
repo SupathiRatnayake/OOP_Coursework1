@@ -26,7 +26,8 @@ public class WestminsterRentalVehicleManager implements RentalVehicleManager {
         for (Vehicle v: vehicles){
             if (v.getPlateNo().equals(plateNo)){ // if plate number == given plateNo
                 vehicles.remove(v);  // remove object
-                return v.toString();
+                return "You removed: " + v.toString() +"\n"+
+                        "You have " + (MAX_PARKING - vehicles.size()) + "parking lots.";
             }
         }
         return "The vehicle you are looking to delete does not exist.";
