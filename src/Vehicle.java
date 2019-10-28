@@ -32,5 +32,16 @@ public class Vehicle {
         return engine;
     }
 
-    
+    @Override
+    public boolean equals(Object o) { // equals
+        if (this == o) return true;
+        if (!(o instanceof Vehicle)) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return plateNo.equals(vehicle.plateNo);
+    }
+
+    @Override
+    public int hashCode() { // hashcode
+        return Objects.hash(plateNo);
+    }
 }
