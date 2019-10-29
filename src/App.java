@@ -1,21 +1,55 @@
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class App {
+public class App extends Application implements EventHandler<ActionEvent> {
 
     // set rvm as new WestminsterRentalVehicleManager
     private static WestminsterRentalVehicleManager rvm = new WestminsterRentalVehicleManager();
 
     private static Scanner in = new Scanner(System.in); // Scanner object
 
+    // GUI Objects
+    // text field
+    TextField txtName;
+    // search button
+    Button btnSearch;
+    // search button
+    Button btnReset;
+    //Tile pane
+    TilePane rt;
+    //Radio btn
+    RadioButton r1,r2;
+    // Toggle grp
+    ToggleGroup tg;
+
+    // GUI Table
+    TableView<Vehicle> table;
+    // END GUI Object list
+
 
     public static void main(String[] args) {
 
         // test file read
-        init();
+        initData();
 
         // for testing purposes test()
         test();
+
+        launch(args);
 
         int option;
         do{
@@ -175,7 +209,7 @@ public class App {
         }
     }
 
-    static void init(){
+    static void initData(){
         try {
             rvm.readList();
         } catch (IOException e) {
@@ -189,4 +223,173 @@ public class App {
         in.nextLine();
     }
 
+    // JAVA FX
+    @Override
+    public void start(Stage primaryStage) {
+        Stage stage;
+        Scene scene;
+
+
+        ObservableList<Vehicle> observableVehicles = FXCollections.observableArrayList(rvm.getVehicles());
+
+        stage = primaryStage;
+        stage.setTitle("Vehicles");
+
+        // id col
+//        TableColumn<Vehicle, Integer> idColumn = new TableColumn<>("ID");
+//        idColumn.setMinWidth(20);
+//        idColumn.setCellValueFactory(new PropertyValueFactory<>("itemId"));
+
+        // title col
+        TableColumn<Vehicle, String> pNo = new TableColumn<>("Plate Number");
+        pNo.setMinWidth(100);
+        pNo.setCellValueFactory(new PropertyValueFactory<>("plateNo"));
+
+        // genre col
+        TableColumn<Vehicle, String> make = new TableColumn<>("Make");
+        make.setMinWidth(100);
+        make.setCellValueFactory(new PropertyValueFactory<>("make"));
+
+        // date col
+        TableColumn<Vehicle, Integer> engine = new TableColumn<>("Engine (cc)");
+        engine.setMinWidth(100);
+        engine.setCellValueFactory(new PropertyValueFactory<>("engine"));
+
+        // artist col
+        TableColumn<Vehicle, String> vehicle = new TableColumn<>("Vehicle");
+        vehicle.setMinWidth(100);
+        vehicle.setCellValueFactory(new PropertyValueFactory<>("vehicle"));
+
+        // doors
+        TableColumn<Vehicle, Integer> doors = new TableColumn<>("Doors");
+        doors.setMinWidth(50);
+        doors.setCellValueFactory(new PropertyValueFactory<>("doors"));
+
+        // seats
+        TableColumn<Vehicle, Integer> seats = new TableColumn<>("Seats");
+        seats.setMinWidth(50);
+        seats.setCellValueFactory(new PropertyValueFactory<>("seats"));
+
+        // type col
+        TableColumn<Vehicle, Integer> btype = new TableColumn<>("Bike Style");
+        btype.setMinWidth(20);
+        btype.setCellValueFactory(new PropertyValueFactory<>("bikeType"));
+
+        // type col
+        TableColumn<Vehicle, String> sidecar = new TableColumn<>("Sidecar");
+        sidecar.setMinWidth(20);
+        sidecar.setCellValueFactory(new PropertyValueFactory<>("sidecar"));
+
+        table = new TableView<>();
+        table.setItems(observableVehicles);
+        table.getColumns().addAll(pNo, make, engine, vehicle, seats, btype, sidecar);
+
+        // label
+        Label lbl1 = new Label();
+        lbl1.setText("Album: ");
+
+        // input
+        txtName = new TextField();
+        txtName.setPromptText("Enter Album Title");
+
+        // Search Button
+        btnSearch = new Button();
+        btnSearch.setText("Search");
+        btnSearch.setOnAction(this);
+
+        // reset Button
+        btnReset = new Button();
+        btnReset.setText("Reset");
+        btnReset.setOnAction(this);
+
+        // tile pane
+        rt = new TilePane();
+
+        // radio btn
+        r1 = new RadioButton("Car");
+        r2 = new RadioButton("Bike");
+
+        // new toggle group
+        tg = new ToggleGroup();
+        // set toggle group to radio
+        r1.setToggleGroup(tg);
+        r2.setToggleGroup(tg);
+
+        rt.getChildren().addAll(r1,r2); // add radio to tile pane
+
+        // HBox
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.getChildren().addAll(lbl1, txtName, btnSearch, btnReset, rt);
+
+        // scene1
+        VBox layout1 = new VBox();
+        layout1.setSpacing(10);
+        layout1.getChildren().addAll(hBox, table);
+
+        scene = new Scene(layout1);
+
+        stage.setScene(scene);
+        stage.show();
+
+
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+        ArrayList<Vehicle> filteredList;
+        ObservableList<Vehicle> obsFilteredList;
+
+        if (event.getSource() == btnSearch){
+            String val = txtName.getText().toLowerCase();
+            filteredList = new ArrayList<>();
+            boolean found = false;
+            for (Vehicle v : rvm.getVehicles()){
+                if (v.getPlateNo().toLowerCase().equals(val)){
+                    filteredList.add(v);
+                    found = true;
+                }
+
+            }
+
+            obsFilteredList = FXCollections.observableArrayList(filteredList);
+
+            table.setItems(obsFilteredList);
+
+            if (!found){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("No vehicles found");
+                alert.setContentText("There is no vehicle with plate number " + val);
+                alert.show();
+                clearFilter();
+            }
+
+        }
+
+        if (event.getSource() == btnReset){
+            clearFilter();
+        }
+
+        if(event.getSource() == tg){
+            RadioButton rbtn = (RadioButton) tg.getSelectedToggle();
+            String vType = rbtn.getText();
+            filteredList = new ArrayList<>();
+            for (Vehicle v: rvm.getVehicles()){
+                if (v.getClass().getName().equals(vType)){
+                    filteredList.add(v);
+                }
+            }
+            obsFilteredList = FXCollections.observableArrayList(filteredList);
+
+            table.setItems(obsFilteredList);
+        }
+
+    }
+
+    // GUI Clear filter
+    private void clearFilter(){
+        txtName.clear();
+        ObservableList<Vehicle> observableVehicles = FXCollections.observableArrayList(rvm.getVehicles());
+        table.setItems(observableVehicles);
+    }
 }

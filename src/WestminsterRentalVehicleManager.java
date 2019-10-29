@@ -9,6 +9,10 @@ public class WestminsterRentalVehicleManager implements RentalVehicleManager {
     private ArrayList<Vehicle> vehicles = new ArrayList<>(); // initialize empty ArrayList of Vehicle objects
     private ArrayList<Schedule> bookings = new ArrayList<>(); // Initialize ArrayList of booking schedules
 
+    public ArrayList<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
     private final int MAX_PARKING = 50;
     @Override
     public String addVehicle(Vehicle v) {

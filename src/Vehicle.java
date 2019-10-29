@@ -31,6 +31,10 @@ public class Vehicle {
         return engine;
     }
 
+    public String getVehicle(){
+        return this.getClass().getName();
+    }
+
     @Override
     public boolean equals(Object o) { // equals
         if (this == o) return true;
